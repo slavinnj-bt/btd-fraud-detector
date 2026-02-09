@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  fraud-detector:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - BRAINTRUST_API_KEY=${BRAINTRUST_API_KEY}
+      - ESCALATION_EMAIL=${ESCALATION_EMAIL:-fraud-team@example.com}
+    env_file:
+      - .env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

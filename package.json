@@ -1,0 +1,45 @@
+{
+  "name": "btd-fraud-detector",
+  "version": "0.1.0",
+  "description": "A demo application which provides an agent and evals for detecting fraudulent payments",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "mastra:build": "mastra build",
+    "mastra:init": "mastra init",
+    "lambda:build": "docker build -t btd-fraud-detector .",
+    "lambda:deploy": "bash scripts/deploy-lambda.sh",
+    "test:agent": "node scripts/test-agent.js"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^2.0.0",
+    "@ai-sdk/openai": "^2.0.0",
+    "@ai-sdk/svelte": "^1.0.4",
+    "@mastra/braintrust": "^1.0.2",
+    "@mastra/core": "^1.2.0",
+    "@mastra/observability": "^1.2.0",
+    "ai": "^5.0.0",
+    "nodemailer": "^6.9.15",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-auto": "^3.0.0",
+    "@sveltejs/adapter-node": "^5.0.0",
+    "@sveltejs/kit": "^2.0.0",
+    "@sveltejs/vite-plugin-svelte": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@types/nodemailer": "^6.4.16",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "svelte": "^5.0.0",
+    "svelte-check": "^4.0.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.0"
+  }
+}

@@ -1,0 +1,354 @@
+[
+  {
+    "name": "High Risk Fraud - Brand New Account",
+    "expected_decision": "BLOCK",
+    "data": {
+      "alert_id": "a-2026-0001",
+      "ingest_ts": "2026-02-10T14:12:05Z",
+      "transaction": {
+        "tx_id": "tx-9001",
+        "amount": 1299.95,
+        "currency": "USD",
+        "timestamp": "2026-02-10T14:10:30Z",
+        "payment_method": "card",
+        "card_last4": "4242"
+      },
+      "merchant": {
+        "merchant_id": "m-550",
+        "name": "QuickGadgets Inc",
+        "merchant_risk": "high",
+        "country": "US"
+      },
+      "customer": {
+        "customer_id": "c-77",
+        "account_age_days": 12,
+        "kyc_status": "unverified",
+        "chargeback_rate": 0.0
+      },
+      "signals": {
+        "ip_country": "NG",
+        "device_fingerprint": "dev-3f2b",
+        "velocity": {
+          "tx_last_1h": 4,
+          "tx_last_24h": 7,
+          "amount_last_24h": 2400.5
+        },
+        "fraud_score_third_party": 0.78
+      },
+      "rule_engine_flags": ["velocity_rule", "high_amount_threshold"],
+      "supporting_context": {
+        "recent_events": ["new_card_added", "login_from_new_country"],
+        "prior_disputes": 0,
+        "notes": "Customer profile shows recent email change 2 days ago."
+      }
+    }
+  },
+  {
+    "name": "Clear Fraud - Multiple Red Flags",
+    "expected_decision": "BLOCK",
+    "data": {
+      "alert_id": "a-2026-0002",
+      "ingest_ts": "2026-02-10T15:30:00Z",
+      "transaction": {
+        "tx_id": "tx-9002",
+        "amount": 2499.0,
+        "currency": "USD",
+        "timestamp": "2026-02-10T15:28:00Z",
+        "payment_method": "card",
+        "card_last4": "5678"
+      },
+      "merchant": {
+        "merchant_id": "m-999",
+        "name": "FastElectronics Ltd",
+        "merchant_risk": "high",
+        "country": "CN"
+      },
+      "customer": {
+        "customer_id": "c-123",
+        "account_age_days": 2,
+        "kyc_status": "unverified",
+        "chargeback_rate": 0.0
+      },
+      "signals": {
+        "ip_country": "RU",
+        "device_fingerprint": "dev-unknown",
+        "velocity": {
+          "tx_last_1h": 6,
+          "tx_last_24h": 6,
+          "amount_last_24h": 8500.0
+        },
+        "fraud_score_third_party": 0.92
+      },
+      "rule_engine_flags": ["velocity_rule", "high_amount_threshold", "new_account_risk"],
+      "supporting_context": {
+        "recent_events": ["new_card_added", "email_change", "login_from_new_country"],
+        "prior_disputes": 0,
+        "notes": "Account created 2 days ago. Multiple high-value transactions in short period."
+      }
+    }
+  },
+  {
+    "name": "Legitimate - Established Customer",
+    "expected_decision": "ALLOW",
+    "data": {
+      "alert_id": "a-2026-0003",
+      "ingest_ts": "2026-02-10T16:00:00Z",
+      "transaction": {
+        "tx_id": "tx-9003",
+        "amount": 49.99,
+        "currency": "USD",
+        "timestamp": "2026-02-10T15:58:00Z",
+        "payment_method": "card",
+        "card_last4": "1234"
+      },
+      "merchant": {
+        "merchant_id": "m-100",
+        "name": "Amazon.com",
+        "merchant_risk": "low",
+        "country": "US"
+      },
+      "customer": {
+        "customer_id": "c-500",
+        "account_age_days": 365,
+        "kyc_status": "verified",
+        "chargeback_rate": 0.0
+      },
+      "signals": {
+        "ip_country": "US",
+        "device_fingerprint": "dev-known-abc123",
+        "velocity": {
+          "tx_last_1h": 1,
+          "tx_last_24h": 2,
+          "amount_last_24h": 89.98
+        },
+        "fraud_score_third_party": 0.12
+      },
+      "rule_engine_flags": [],
+      "supporting_context": {
+        "recent_events": [],
+        "prior_disputes": 0,
+        "notes": "Regular customer with established history."
+      }
+    }
+  },
+  {
+    "name": "Borderline - Mixed Signals (Escalate Expected)",
+    "expected_decision": "ESCALATE",
+    "data": {
+      "alert_id": "a-2026-0004",
+      "ingest_ts": "2026-02-10T17:00:00Z",
+      "transaction": {
+        "tx_id": "tx-9004",
+        "amount": 899.0,
+        "currency": "USD",
+        "timestamp": "2026-02-10T16:58:00Z",
+        "payment_method": "card",
+        "card_last4": "9876"
+      },
+      "merchant": {
+        "merchant_id": "m-350",
+        "name": "BestBuy",
+        "merchant_risk": "medium",
+        "country": "US"
+      },
+      "customer": {
+        "customer_id": "c-250",
+        "account_age_days": 45,
+        "kyc_status": "verified",
+        "chargeback_rate": 0.01
+      },
+      "signals": {
+        "ip_country": "CA",
+        "device_fingerprint": "dev-mobile-xyz",
+        "velocity": {
+          "tx_last_1h": 2,
+          "tx_last_24h": 3,
+          "amount_last_24h": 1200.0
+        },
+        "fraud_score_third_party": 0.62
+      },
+      "rule_engine_flags": ["unusual_location"],
+      "supporting_context": {
+        "recent_events": ["login_from_new_location"],
+        "prior_disputes": 0,
+        "notes": "Customer traveling. IP from Canada, typically US-based."
+      }
+    }
+  },
+  {
+    "name": "Legitimate - Low Value Transaction",
+    "expected_decision": "ALLOW",
+    "data": {
+      "alert_id": "a-2026-0005",
+      "ingest_ts": "2026-02-10T18:00:00Z",
+      "transaction": {
+        "tx_id": "tx-9005",
+        "amount": 12.99,
+        "currency": "USD",
+        "timestamp": "2026-02-10T17:58:00Z",
+        "payment_method": "card",
+        "card_last4": "3333"
+      },
+      "merchant": {
+        "merchant_id": "m-200",
+        "name": "Starbucks",
+        "merchant_risk": "low",
+        "country": "US"
+      },
+      "customer": {
+        "customer_id": "c-600",
+        "account_age_days": 730,
+        "kyc_status": "verified",
+        "chargeback_rate": 0.0
+      },
+      "signals": {
+        "ip_country": "US",
+        "device_fingerprint": "dev-mobile-known",
+        "velocity": {
+          "tx_last_1h": 1,
+          "tx_last_24h": 3,
+          "amount_last_24h": 45.0
+        },
+        "fraud_score_third_party": 0.05
+      },
+      "rule_engine_flags": [],
+      "supporting_context": {
+        "recent_events": [],
+        "prior_disputes": 0,
+        "notes": "Frequent customer, typical purchase pattern."
+      }
+    }
+  },
+  {
+    "name": "High Risk - Card Testing Pattern",
+    "expected_decision": "BLOCK",
+    "data": {
+      "alert_id": "a-2026-0006",
+      "ingest_ts": "2026-02-10T19:00:00Z",
+      "transaction": {
+        "tx_id": "tx-9006",
+        "amount": 1.0,
+        "currency": "USD",
+        "timestamp": "2026-02-10T18:59:00Z",
+        "payment_method": "card",
+        "card_last4": "8888"
+      },
+      "merchant": {
+        "merchant_id": "m-750",
+        "name": "TestMerchant Online",
+        "merchant_risk": "high",
+        "country": "US"
+      },
+      "customer": {
+        "customer_id": "c-999",
+        "account_age_days": 1,
+        "kyc_status": "unverified",
+        "chargeback_rate": 0.0
+      },
+      "signals": {
+        "ip_country": "CN",
+        "device_fingerprint": "dev-automated",
+        "velocity": {
+          "tx_last_1h": 15,
+          "tx_last_24h": 20,
+          "amount_last_24h": 25.0
+        },
+        "fraud_score_third_party": 0.95
+      },
+      "rule_engine_flags": ["velocity_rule", "card_testing_pattern", "new_account_risk"],
+      "supporting_context": {
+        "recent_events": ["multiple_failed_attempts", "new_card_added"],
+        "prior_disputes": 0,
+        "notes": "Suspicious pattern of small transactions suggesting card testing."
+      }
+    }
+  },
+  {
+    "name": "Moderate Risk - First Large Purchase",
+    "expected_decision": "ESCALATE",
+    "data": {
+      "alert_id": "a-2026-0007",
+      "ingest_ts": "2026-02-10T20:00:00Z",
+      "transaction": {
+        "tx_id": "tx-9007",
+        "amount": 1599.0,
+        "currency": "USD",
+        "timestamp": "2026-02-10T19:58:00Z",
+        "payment_method": "card",
+        "card_last4": "7777"
+      },
+      "merchant": {
+        "merchant_id": "m-400",
+        "name": "Apple Store",
+        "merchant_risk": "low",
+        "country": "US"
+      },
+      "customer": {
+        "customer_id": "c-350",
+        "account_age_days": 120,
+        "kyc_status": "verified",
+        "chargeback_rate": 0.0
+      },
+      "signals": {
+        "ip_country": "US",
+        "device_fingerprint": "dev-laptop-known",
+        "velocity": {
+          "tx_last_1h": 1,
+          "tx_last_24h": 1,
+          "amount_last_24h": 1599.0
+        },
+        "fraud_score_third_party": 0.45
+      },
+      "rule_engine_flags": ["high_amount_threshold"],
+      "supporting_context": {
+        "recent_events": [],
+        "prior_disputes": 0,
+        "notes": "Customer's first purchase over $500. Previous transactions all under $100."
+      }
+    }
+  },
+  {
+    "name": "Legitimate - Regular Business Purchase",
+    "expected_decision": "ALLOW",
+    "data": {
+      "alert_id": "a-2026-0008",
+      "ingest_ts": "2026-02-10T21:00:00Z",
+      "transaction": {
+        "tx_id": "tx-9008",
+        "amount": 350.0,
+        "currency": "USD",
+        "timestamp": "2026-02-10T20:58:00Z",
+        "payment_method": "card",
+        "card_last4": "6666"
+      },
+      "merchant": {
+        "merchant_id": "m-150",
+        "name": "Office Depot",
+        "merchant_risk": "low",
+        "country": "US"
+      },
+      "customer": {
+        "customer_id": "c-700",
+        "account_age_days": 540,
+        "kyc_status": "verified",
+        "chargeback_rate": 0.0
+      },
+      "signals": {
+        "ip_country": "US",
+        "device_fingerprint": "dev-desktop-known",
+        "velocity": {
+          "tx_last_1h": 1,
+          "tx_last_24h": 2,
+          "amount_last_24h": 450.0
+        },
+        "fraud_score_third_party": 0.08
+      },
+      "rule_engine_flags": [],
+      "supporting_context": {
+        "recent_events": [],
+        "prior_disputes": 0,
+        "notes": "Business customer with consistent monthly purchases."
+      }
+    }
+  }
+]
